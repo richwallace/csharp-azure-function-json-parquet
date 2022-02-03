@@ -1,0 +1,51 @@
+{
+	"info": {
+		"_postman_id": "518da45e-a93d-4a65-a44a-7e95b7b50414",
+		"name": "Event Grid Message to Azure Data Lake Storage Gen2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:7071/runtime/webhooks/EventGrid?functionName=EventSubscriber",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "aeg-event-type",
+						"value": "Notification",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"id\": \"4442acf9-d773-4bdb-a495-bc908ddd1199\",\r\n\t\"topic\": \"contact\",\r\n\t\"subject\": \"Contact\",\r\n\t\"data\": {\r\n\t\t\"id\": 6720,\r\n\t\t\"firstName\": \"Thor\",\r\n\t\t\"lastName\": \"Odinson\",\r\n        \"displayName\": \"Thor Odinson\",\r\n\t\t\"createdBy\": \"apisvcdev\",\r\n\t\t\"createdUtcDate\": \"2022-01-25T22:46:31.765Z\",\r\n\t\t\"lastModifiedBy\": \"apisvcdev\",\r\n\t\t\"lastModifiedUtcDate\": \"2022-01-25T22:46:31.765Z\"\r\n\t},\r\n\t\"eventType\": \"Insert\",\r\n\t\"eventTime\": \"2022-01-25T22:46:35.0765353Z\",\r\n\t\"metadataVersion\": \"1\",\r\n\t\"dataVersion\": \"1.0\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:7071/runtime/webhooks/EventGrid?functionName=EventSubscriber",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7071",
+					"path": [
+						"runtime",
+						"webhooks",
+						"EventGrid"
+					],
+					"query": [
+						{
+							"key": "functionName",
+							"value": "EventSubscriber"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
