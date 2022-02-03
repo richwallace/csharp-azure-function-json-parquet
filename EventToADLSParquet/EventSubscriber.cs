@@ -7,11 +7,9 @@ using ChoETL;
 using EventToADLSParquet.Models;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.EventGrid;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.IO;
 
 namespace EventToADLSParquet
 {
@@ -32,16 +30,20 @@ namespace EventToADLSParquet
             };
 
             // Write converted object to Parquet and upload to storage
-            StorageSharedKeyCredential sharedKeyCredential = new StorageSharedKeyCredential(Environment.GetEnvironmentVariable("Storage:AccountName"), Environment.GetEnvironmentVariable("Storage:AccountKey"));
+            StorageSharedKeyCredential sharedKeyCredential = new(
+                Environment.GetEnvironmentVariable("Storage:AccountName"), 
+                Environment.GetEnvironmentVariable("Storage:AccountKey")
+            );
 
             // Create DataLakeServiceClient using StorageSharedKeyCredentials
             var serviceUri = new Uri(Environment.GetEnvironmentVariable("Storage:ServiceUri"));
-            DataLakeServiceClient serviceClient = new DataLakeServiceClient(serviceUri, sharedKeyCredential);
+            DataLakeServiceClient serviceClient = new(serviceUri, sharedKeyCredential);
 
             // Get a reference to a filesystem named after event subject and then create it
             DataLakeFileSystemClient filesystem = serviceClient.GetFileSystemClient("events");
             filesystem.CreateIfNotExists();
 
+            // Create sub directory based on event date
             var eventDate = eventGridEvent.EventTime.Date.ToString("yyyy-MM-dd");
             DataLakeDirectoryClient directory = filesystem.GetDirectoryClient($"{eventGridEvent.Subject}/{eventDate}");
             directory.CreateIfNotExists();
